@@ -14,7 +14,11 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@ai-monorepo/api/weather-lookup-api": [
+        "api/weather-lookup-api/src/index.ts"
+      ]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
