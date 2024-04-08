@@ -43,23 +43,4 @@ export class weatherLookupService {
       throw new Error(`Error fetching weather data ${error.message}`);
     }
   }
-
-
-  // still good code, just used on angular component
-  /*
-  private getUserLocation(): GeolocationPosition {
-
-    // could pass latlong data from UI instead
-    let userLocation: GeolocationPosition;
-
-    if("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
-        userLocation = position;
-      });
-    } else {
-      throw new Error('navigator is not available');
-    }
-    
-    return userLocation;
-  } */
 }
