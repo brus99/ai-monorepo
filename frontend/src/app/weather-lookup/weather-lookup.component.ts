@@ -6,13 +6,15 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   templateUrl: './weather-lookup.component.html',
   styleUrl: './weather-lookup.component.css',
-  selector: 'weather-lookup',
+  selector: 'app-weather-lookup',
 })
 export class WeatherLookupComponent {
   constructor() {
-    const userLocation = this.getUserLocation();
     this.latitude = 0;
     this.longitude = 0;
+  }
+  ngOnInit() {
+    this.getUserLocation();
   }
 
   public latitude: number;
