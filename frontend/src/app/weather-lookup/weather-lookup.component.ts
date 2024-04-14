@@ -13,6 +13,7 @@ export class WeatherLookupComponent {
     this.latitude = 0;
     this.longitude = 0;
   }
+  
   ngOnInit() {
     this.getUserLocation();
   }
