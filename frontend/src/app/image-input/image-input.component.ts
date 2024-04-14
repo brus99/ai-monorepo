@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DataProcessingService } from '../services/data-processing.service';
 
 @Component({
   selector: 'app-image-input',
@@ -9,23 +10,13 @@ import { CommonModule } from '@angular/common';
   styleUrl: './image-input.component.css',
 })
 export class ImageInputComponent {
-  private images: FileList = {} as FileList;
+  private images: FileList = new FileList();
 
-  public inputFiles(list: FileList): string[] {
-    const reader = new FileReader();
-    const parsedImages: string[] = [];
+  private bundledData: FormData = new FormData();
 
-    for(let i = 0; i < list.length; i++) {
-      const file = list.item(i);
-      if (file) {
-        reader.readAsDataURL(file);
-        reader.onload = (event: any) => {
-          parsedImages.push(event.target.result);
-        };
-      }
-    }
+  constructor(private dataProcessingService: DataProcessingService){
 
-    return parsedImages;
+
   }
 
   public onDragOver(event: DragEvent): void {
@@ -41,14 +32,23 @@ export class ImageInputComponent {
   }
 
   private handleFiles(files: FileList) {
+    const bundle = new FormData();
+
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       if (file.type.startsWith('image/')) {
-        // Process image file
+        const key = 'image-' + i;
+        bundle.append(key, file);
+        this.bundledData = bundle
+        // emit event that data was bundled
         console.log('Image file:', file);
       } else {
         console.log('Not an image file:', file.name);
       }
+    }
+
+    if(bundle.keys.length){
+      this.dataProcessingService.dataPrepared();
     }
   }
   

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './weather-lookup.component.css',
   selector: 'app-weather-lookup',
 })
-export class WeatherLookupComponent {
+export class WeatherLookupComponent implements OnInit {
   constructor() {
     this.latitude = 0;
     this.longitude = 0;
