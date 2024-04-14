@@ -1,25 +1,47 @@
+from distutils.filelist import FileList
+from typing import List
+from aiohttp import FormData
 from transformers import pipeline
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, AutoModelForCausalLM
 from flask import Flask
 
 app = Flask(__name__)
 
 
+@app.route("/2")
+def suggestCombos(clothingData: List[str] = []):
+
+    import torch
+
+    suggestClassifier = pipeline('text-generation')
+
+    ques = 'placehold'
+
+
+    res = suggestClassifier(question=ques,image=imageData)
+
+    return res
+
 
 
 @app.route("/")
-def classifyImages():
-    classifier = pipeline(task='image-classification')
-
-    results = classifier(images='https://media.istockphoto.com/id/685779142/photo/red-tshirt-clothes.jpg?s=2048x2048&w=is&k=20&c=1WMEw-9MQ0RKWzyYZYF8k5GUesY6YvtdosEAFk46wZY=')
-
-
+def classifyImages(fileList: FormData = []):
     responses = []
 
-    for res in results:
-        responses.append(res['label'])
+    for file in fileList:
+        imageData = file.read()
+        
+        suggestClassifier = pipeline('visual-question-answering')
 
-    return responses[0]
+        ques = 'you are catalogeing a persons closet. Describe this article of clothing in 15 words. Describe it so somebody could easily pick out the article of clothing based on the descriptors and most importantly, ensure that the descriptors let them know in what weather they can wear it. Make sure you break down the weather into 5 categories, very cold, cold, medium, hot and very hot. Your second priority should be fashion, such as the style of the clothing like Bojo, formal or summery.'
+
+
+        res = suggestClassifier(question=ques,image=imageData)
+
+        responses.append(res[0]) #results[0] contains the highest certainty guess by the model
+
+
+    return responses
 
 
 
