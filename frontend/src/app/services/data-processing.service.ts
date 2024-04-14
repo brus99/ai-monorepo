@@ -11,7 +11,6 @@ export class DataProcessingService {
   public modelResponse: Subject<string> = new Subject<string>();
   private dataPipeSub: Subscription;
 
-  //dataReadyEmitter$ = this.dataReady.asObservable();
 
   constructor(){
     this.dataPipeSub = this.dataPipe.subscribe((data: FormData) => {
