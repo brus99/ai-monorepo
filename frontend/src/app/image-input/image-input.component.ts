@@ -1,4 +1,4 @@
-import { Component, Injectable } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataProcessingService } from '../services/data-processing.service';
 
@@ -36,6 +36,7 @@ export class ImageInputComponent {
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
+
       if (file.type.startsWith('image/')) {
         const key = 'image-' + i;
         bundle.append(key, file);
@@ -47,9 +48,7 @@ export class ImageInputComponent {
       }
     }
 
-    if(bundle.keys.length){
-      this.dataProcessingService.dataPrepared();
-    }
+    this.dataProcessingService.passToPythonFlaskApi(this.bundledData);
   }
   
 }

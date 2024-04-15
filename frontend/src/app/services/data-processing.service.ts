@@ -13,7 +13,7 @@ export class DataProcessingService {
 
 
   constructor(){
-    this.dataPipeSub = this.dataPipe.subscribe((data: FormData) => {
+    this.dataPipeSub = this.dataPipe.subscribe((data: File) => {// left off here for the night, working through formData type in unit test from angular component -> flask server
       this.passToPythonFlaskApi(data);
     });
 
@@ -28,8 +28,9 @@ export class DataProcessingService {
   }
 
 
-  public async passToPythonFlaskApi(data: FormData){
-    const res = await axios.post('http://localhost:5000/api', data, {headers: {'Content-Type': 'multipart/form-data'}});
+  public async passToPythonFlaskApi(data: File) : Promise<any>{
+    console.log(data);
+    const res = await axios.post('http://127.0.0.1:5000', data);
 
     this.modelResponseReceived(res.data);
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataProcessingService } from '../services/data-processing.service';
 
@@ -6,17 +6,23 @@ import { DataProcessingService } from '../services/data-processing.service';
   selector: 'app-data-action-component',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './data-action-component.component.html',
-  styleUrl: './data-action-component.component.css',
+  templateUrl: './data-action.component.html',
+  styleUrl: './data-action.component.css',
 })
-export class DataActionComponent {
+export class DataActionComponent implements OnInit{
 
   constructor(private dataProcessingService: DataProcessingService){
-    this.dataProcessingService = dataProcessingService;
+  }
+  ngOnInit(): void {
+    this.dataProcessingService.dataPipe.subscribe((data: FormData) => {
+      this.processData(data);
+    });
   }
 
 
-  public processData(): void {
-    
+
+
+  public processData(data: FormData){
+    this.dataProcessingService.passToPythonFlaskApi(data);
   }
 }

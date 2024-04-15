@@ -4,9 +4,10 @@ from aiohttp import FormData
 from transformers import pipeline
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, AutoModelForCausalLM
 from flask import Flask
+from flask_cors import CORS
 
 app = Flask(__name__)
-
+CORS(app)
 
 @app.route("/2")
 def suggestCombos(clothingData: List[str] = [], weatherRating = ''):
@@ -36,7 +37,7 @@ def suggestCombos(clothingData: List[str] = [], weatherRating = ''):
 
 
 
-@app.route("/")
+@app.route("/", methods=['POST'])
 def classifyImages(fileList: FormData = []):
     responses = []
 
