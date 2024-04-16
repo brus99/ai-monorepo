@@ -37,22 +37,31 @@ def suggestCombos(clothingData: List[str] = [], weatherRating = ''):
 
 
 
+from flask import request
+from PIL import Image
 @app.route("/", methods=['POST'])
-def classifyImages(fileList: FormData = []):
+def classifyImages():
     responses = []
+    print(request.files)
 
-    for file in fileList:
-        imageData = file.read()
-        
-        suggestClassifier = pipeline('visual-question-answering')
+    # Access the uploaded files
+    for i in range(len(request.files)):
+        file_key = 'image-' + str(i)
+        file = request.files.get(file_key)
 
-        ques = 'you are catalogeing a persons closet. Describe this article of clothing in 15 words. Describe it so somebody could easily pick out the article of clothing based on the descriptors and most importantly, ensure that the descriptors let them know in what weather they can wear it. Make sure you break down the weather into 5 categories, very cold, cold, medium, hot and very hot. Your second priority should be fashion, such as the style of the clothing like Bojo, formal or summery.'
+        if file:
+            print('Received file', file.filename)
+
+            suggestClassifier = pipeline('visual-question-answering')
+
+            ques = 'What is this article of clothing?'
+            imageData = Image.open(file.stream)
+            res = suggestClassifier(imageData,ques)
+
+            print(res)
 
 
-        res = suggestClassifier(question=ques,image=imageData)
-
-        responses.append(res[0]) #results[0] contains the highest certainty guess by the model
-
+            responses.append(res[0]) #results[0] contains the highest certainty guess by the model
 
     return responses
 

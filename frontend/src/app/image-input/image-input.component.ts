@@ -39,7 +39,8 @@ export class ImageInputComponent {
 
       if (file.type.startsWith('image/')) {
         const key = 'image-' + i;
-        bundle.append(key, file);
+        const curBlob = new Blob([file], { type: file.type });
+        bundle.append(key, curBlob, file.name);
         this.bundledData = bundle
         // emit event that data was bundled
         console.log('Image file:', file);

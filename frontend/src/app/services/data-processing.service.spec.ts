@@ -27,16 +27,22 @@ describe('DataProcessingServiceService', () => {
 
   it('should call flask api', async () => {
     const imageData = fs.readFileSync('assets/mcqueen.jpeg');
+    const formData = new FormData();
 
-    // Create a Blob from the Buffer
     const blob = new Blob([imageData], { type: 'image/jpeg' });
 
-    // Create a File object
-    const file = new File([blob], 'mcqueen.jpeg', { type: 'image/jpeg' });
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      const contents = event.target?.result;
+    };
 
-    console.log(typeof file);
+    formData.append('image-0', blob, 'mcqueen.jpeg');
 
-    await service.passToPythonFlaskApi(file);
+    // confirmed formData has a n iamge as the value
+    await service.passToPythonFlaskApi(formData);
+    setTimeout(() =>  5000);
+
+
 
     httpMock.expectOne('http://127.0.0.1:5000/').flush('response');
   });
