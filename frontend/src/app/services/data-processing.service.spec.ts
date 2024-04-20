@@ -36,12 +36,37 @@ describe('DataProcessingServiceService', () => {
 
 
       formData.append('image-0', blob, 'mcqueen.jpeg');
+      formData.append('image-1', blob, 'mcqueen.jpeg');
 
 
-      const res = await service.passToPythonFlaskApi(formData);
+      const res = await service.identifyImage(formData);
 
       expect(res.data[0]["answer"]).toEqual('shirt');
 
+    });
+    it('should call flask api for multiple files', async () => {
+      const imageData = fs.readFileSync('assets/mcqueen.jpeg');
+      const imageDataTwo = fs.readFileSync('assets/elephant.jpeg');
+
+      const formData = new FormData();
+      const formDataTwo = new FormData();
+
+      const blob = new Blob([imageData], { type: 'image/jpeg' });
+
+      const blobTwo = new Blob([imageDataTwo], { type: 'image/jpeg' });
+
+      formData.append('image-0', blob, 'mcqueen.jpeg');
+      formDataTwo.append('image-1', blobTwo, 'elephant.jpeg');
+
+      const res = await service.identifyImage(formDataTwo);
+
+
+      const resTwo = await service.identifyImage(formDataTwo);
+
+      console.log(res.data)
+      console.log(resTwo.data)
+
+      expect(res.data).toEqual(resTwo.data);
     });
   });
 
