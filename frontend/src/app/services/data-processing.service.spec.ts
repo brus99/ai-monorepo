@@ -25,27 +25,24 @@ describe('DataProcessingServiceService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should call flask api', async () => {
-    const imageData = fs.readFileSync('assets/mcqueen.jpeg');
-    const formData = new FormData();
 
-    const blob = new Blob([imageData], { type: 'image/jpeg' });
+    
 
-    const reader = new FileReader();
-    reader.onload = function(event) {
-      const contents = event.target?.result;
-    };
+    it('should call flask api', async () => {
+      const imageData = fs.readFileSync('assets/mcqueen.jpeg');
+      const formData = new FormData();
 
-    formData.append('image-0', blob, 'mcqueen.jpeg');
-
-    // confirmed formData has a n iamge as the value
-    await service.passToPythonFlaskApi(formData);
-    setTimeout(() =>  5000);
+      const blob = new Blob([imageData], { type: 'image/jpeg' });
 
 
+      formData.append('image-0', blob, 'mcqueen.jpeg');
 
-    httpMock.expectOne('http://127.0.0.1:5000/').flush('response');
+
+      const res = await service.passToPythonFlaskApi(formData);
+
+      expect(res.data[0]["answer"]).toEqual('shirt');
+
+    });
   });
-});
 
 

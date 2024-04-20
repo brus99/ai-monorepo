@@ -10,7 +10,7 @@ export class DataProcessingService {
   public dataPipe: Subject<FormData> = new Subject<FormData>();
   public modelResponse: Subject<string> = new Subject<string>();
   private dataPipeSub: Subscription;
-
+  
 
   constructor(){
     this.dataPipeSub = this.dataPipe.subscribe((data: FormData) => {
@@ -25,6 +25,7 @@ export class DataProcessingService {
 
   public modelResponseReceived(response: string){
     this.modelResponse.next(response);
+    console.log(response);
   }
 
 
@@ -40,6 +41,7 @@ export class DataProcessingService {
 
       this.modelResponseReceived(res.data);
       // confirmed post is received by flask server as well
+      console.log('hello', res.data)
       return res;
     } catch (error) {
       // Handle error
