@@ -39,31 +39,32 @@ def suggestCombos(clothingData: List[str] = [], weatherRating = ''):
 
 from flask import request
 from PIL import Image
+from transformers import set_seed
 @app.route("/", methods=['POST'])
 def classifyImages():
-    responses = []
-    print(request.files)
+    import requests
+    from PIL import Image
+    from transformers import BlipProcessor, BlipForConditionalGeneration
 
-    # Access the uploaded files
-    for i in range(len(request.files)):
-        file_key = 'image-' + str(i)
-        file = request.files.get(file_key)
+    processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-large")
+    model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-large")
 
-        if file:
-            print('Received file', file.filename)
+    img_url = 'https://storage.googleapis.com/sfr-vision-language-research/BLIP/demo.jpg' 
+    raw_image = Image.open(requests.get(img_url, stream=True).raw).convert('RGB')
 
-            suggestClassifier = pipeline('visual-question-answering')
+    # conditional image captioning
+    text = "a photography of"
+    inputs = processor(raw_image, text, return_tensors="pt")
 
-            ques = 'What is this article of clothing?'
-            imageData = Image.open(file.stream)
-            res = suggestClassifier(imageData,ques)
+    out = model.generate(**inputs)
+    print(processor.decode(out[0], skip_special_tokens=True))
 
-            print(res)
+    # unconditional image captioning
+    inputs = processor(raw_image, return_tensors="pt")
 
-
-            responses.append(res[0]) #results[0] contains the highest certainty guess by the model
-
-    return responses
+    out = model.generate(**inputs)
+    print(processor.decode(out[0], skip_special_tokens=True))
+    return 'done'
 
 
 
