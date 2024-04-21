@@ -48,23 +48,26 @@ def classifyImages():
 
     processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-large")
     model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-large")
+    responses = []
 
-    img_url = 'https://storage.googleapis.com/sfr-vision-language-research/BLIP/demo.jpg' 
-    raw_image = Image.open(requests.get(img_url, stream=True).raw).convert('RGB')
+    for i in range(len(request.files)):
 
-    # conditional image captioning
-    text = "a photography of"
-    inputs = processor(raw_image, text, return_tensors="pt")
+        image_key = 'image-' + str(i)
 
-    out = model.generate(**inputs)
-    print(processor.decode(out[0], skip_special_tokens=True))
+        raw_image = Image.open(request.files[image_key]).convert('RGB')
 
-    # unconditional image captioning
-    inputs = processor(raw_image, return_tensors="pt")
 
-    out = model.generate(**inputs)
-    print(processor.decode(out[0], skip_special_tokens=True))
-    return 'done'
+        print('i got',raw_image)
+
+        text = "a photography of"
+        inputs = processor(raw_image, text, return_tensors="pt")
+
+        out = model.generate(**inputs)
+        model_response = processor.decode(out[0], skip_special_tokens=True)
+        print(model_response)
+        responses.append(model_response)
+
+    return responses
 
 
 

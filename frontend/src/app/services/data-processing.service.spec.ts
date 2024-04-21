@@ -59,10 +59,8 @@ describe('DataProcessingServiceService', () => {
 
       const res = await service.identifyImage(formDataTwo);
 
-      console.log(res.data[-1]["answer"])
-      console.log(res.data[0]['answer'])
-      
-      console.log('data', res.data)
+      expect(res.data[0]).toContain('red shirt');
+      expect(res.data[1]).toContain('elephant');
 
     });
   });
