@@ -57,7 +57,7 @@ describe('DataProcessingServiceService', () => {
       formDataTwo.append('image-0', blob, 'mcqueen.jpeg');
       formDataTwo.append('image-1', blobTwo, 'elephant.jpeg');
 
-      const res = await service.identifyImage(formDataTwo);
+      const res = await service.identifyImages(formDataTwo);
 
       expect(res.data[0]).toContain('red shirt');
       expect(res.data[1]).toContain('elephant');
