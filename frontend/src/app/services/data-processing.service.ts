@@ -14,7 +14,7 @@ export class DataProcessingService {
 
   constructor(){
     this.dataPipeSub = this.dataPipe.subscribe((data: FormData) => {
-      this.identifyImage(data);
+      this.identifyImages(data);
     });
 
   }
@@ -45,6 +45,19 @@ export class DataProcessingService {
       return res;
     } catch (error) {
       // Handle error
+      console.error('Error sending POST request:', error);
+      throw error;
+    }
+  }
+
+
+  public async getClothingCombos(clothingList: string[]): Promise<any> {
+    try {
+      const res = await axios.post(`http:///127.0.0.1:5000/suggestCombos?clothingData=${clothingList}&weatherRating=hot`, clothingList);
+
+      return res;
+      // Handle response
+    } catch (error) {
       console.error('Error sending POST request:', error);
       throw error;
     }

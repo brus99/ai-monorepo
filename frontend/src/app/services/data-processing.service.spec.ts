@@ -36,10 +36,9 @@ describe('DataProcessingServiceService', () => {
 
 
       formData.append('image-0', blob, 'mcqueen.jpeg');
-      formData.append('image-1', blob, 'mcqueen.jpeg');
 
 
-      const res = await service.identifyImage(formData);
+      const res = await service.identifyImages(formData);
 
       expect(res.data[0]["answer"]).toEqual('shirt');
 
@@ -62,6 +61,14 @@ describe('DataProcessingServiceService', () => {
       expect(res.data[0]).toContain('red shirt');
       expect(res.data[1]).toContain('elephant');
 
+    });
+
+    it('should return combos for hot weather from flask api', async () => {
+      const clothingList = ['red winter coat ', 'short sleeve green shirt', 'shorts', 'long pants', ];
+
+      const res = await service.getClothingCombos(clothingList);
+
+      console.log(res);
     });
   });
 
