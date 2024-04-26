@@ -64,11 +64,17 @@ describe('DataProcessingServiceService', () => {
     });
 
     it('should return combos for hot weather from flask api', async () => {
-      const clothingList = ['red winter coat ', 'short sleeve green shirt', 'shorts', 'long pants', ];
+      const clothingList = ['red winter coat ', 'short sleeve green shirt', 'shorts', 'long pants'];
 
-      const res = await service.getClothingCombos(clothingList);
+      const modifiedClothingList = clothingList.map((item) => 
+        item.replace(/ /g, '$')
+      );
 
-      console.log(res);
+      console.log('clothlist', modifiedClothingList);
+
+      const res = await service.getClothingCombos(modifiedClothingList);
+
+      console.log(res.data);
     });
   });
 

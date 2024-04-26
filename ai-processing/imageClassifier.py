@@ -11,24 +11,27 @@ CORS(app)
 @app.route("/suggestCombos", methods=['POST'])
 def suggestCombos(clothingData: List[str] = [], weatherRating = ''):
 
-    import transformers
-    import torch
 
-    model_id = "meta-llama/Meta-Llama-3-8B"
-
-    pipeline = transformers.pipeline(
-        "text-generation", model=model_id, model_kwargs={"torch_dtype": torch.bfloat16}, device_map="auto"
-    )
+    pipe= pipeline('question-answering')
 
 
+    question = 'what color is the sky'
+    context = 'the sky is blue'
 
-    prompt = '''you are a fashion designer. you have a client who is looking for a new outfit. they are looking for something that is perfect for a {weatherRating} day. they have given you the following items of clothing to work with:
-    ''' + clothingData + ''' With this clothing data, I want you to supply me suggested outfit combinations based on the weather rating you are given. The weather rating you are given will be in a 5 scale, very cold/cold/medium/hot/very hot. Suggest as many combos as you feel appropriately fits the criteria. Todays weather rating is {weatherRating}'''
+    res = pipe(question,context)
 
-    res = pipeline(prompt)
+    print(res)
 
 
     return res
+
+
+    
+
+
+
+
+
 
 
 

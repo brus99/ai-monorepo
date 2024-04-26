@@ -36,12 +36,10 @@ export class DataProcessingService {
       });
       
 
-      console.log('Response from POST request:', res.data);
       
 
       this.modelResponseReceived(res.data);
       // confirmed post is received by flask server as well
-      console.log('hello', res.data)
       return res;
     } catch (error) {
       // Handle error
@@ -53,7 +51,7 @@ export class DataProcessingService {
 
   public async getClothingCombos(clothingList: string[]): Promise<any> {
     try {
-      const res = await axios.post(`http:///127.0.0.1:5000/suggestCombos?clothingData=${clothingList}&weatherRating=hot`, clothingList);
+      const res = await axios.post(`http:///127.0.0.1:5000/suggestCombos`, clothingList);
 
       return res;
       // Handle response
