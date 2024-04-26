@@ -10,20 +10,37 @@ CORS(app)
 
 @app.route("/suggestCombos", methods=['POST'])
 def suggestCombos(clothingData: List[str] = [], weatherRating = ''):
+    data = request.get_json()
+    print(data)
+
+
+    print(data['clothingData'])
+
+
+    clothing = ''
+
+    for item in data['clothingData']:
+        clothing += item + ' '
+    
+    weatherRating = data['weatherRating']
+
+
 
 
     pipe= pipeline('question-answering')
 
 
-    question = 'what color is the sky'
-    context = 'the sky is blue'
+    question = 'You are a fashion designer given a list of clothing and a weather rating. What clothing combos would you suggest. Return atleast 3 items?'
+    context = clothing + weatherRating
 
-    res = pipe(question,context)
+    result = pipe(question,context)
 
-    print(res)
+    print(
+        f"Answer: '{result['answer']}', score: {round(result['score'], 4)}, start: {result['start']}, end: {result['end']}"
+    )
 
 
-    return res
+    return result
 
 
     

@@ -51,7 +51,14 @@ export class DataProcessingService {
 
   public async getClothingCombos(clothingList: string[]): Promise<any> {
     try {
-      const res = await axios.post(`http:///127.0.0.1:5000/suggestCombos`, clothingList);
+      const encodedClothingList = clothingList.map((item) => item.replace(/ /g, '%'));
+
+      const temperature = 'hot';
+
+      const res = await axios.post(`http:///127.0.0.1:5000/suggestCombos`, {
+        clothingData: encodedClothingList,
+        weatherRating: temperature
+      });
 
       return res;
       // Handle response
