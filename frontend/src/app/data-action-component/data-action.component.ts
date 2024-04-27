@@ -20,9 +20,7 @@ export class DataActionComponent implements OnInit{
   }
 
 
-
-
   public processData(data: FormData){
-    this.dataProcessingService.passToPythonFlaskApi(data);
+    this.dataProcessingService.identifyImages(data);
   }
 }

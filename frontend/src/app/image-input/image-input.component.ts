@@ -10,7 +10,7 @@ import { DataProcessingService } from '../services/data-processing.service';
   styleUrl: './image-input.component.css',
 })
 export class ImageInputComponent {
-  private images: FileList = new FileList();
+
 
   private bundledData: FormData = new FormData();
 
@@ -25,9 +25,9 @@ export class ImageInputComponent {
 
   public onDrop(event: DragEvent): void {
     event.preventDefault();
-    this.images = event.dataTransfer?.files ?? new FileList();
-    if (this.images.length) {
-      this.handleFiles(this.images);
+    const images = event.dataTransfer?.files;
+    if (images) {
+      this.handleFiles(images);
     }
   }
 
@@ -49,7 +49,7 @@ export class ImageInputComponent {
       }
     }
 
-    this.dataProcessingService.passToPythonFlaskApi(this.bundledData);
+    this.dataProcessingService.identifyImages(this.bundledData);
   }
   
 }
