@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataProcessingService } from '../services/data-processing.service';
 
@@ -10,6 +10,11 @@ import { DataProcessingService } from '../services/data-processing.service';
   styleUrl: './image-input.component.css',
 })
 export class ImageInputComponent {
+  @ViewChild('fileInput') fileInput: any;
+
+  openFileExplorer() {
+    this.fileInput.nativeElement.click();
+  }
 
 
   private bundledData: FormData = new FormData();
@@ -29,6 +34,7 @@ export class ImageInputComponent {
     if (images) {
       this.handleFiles(images);
     }
+    
   }
 
   private handleFiles(files: FileList) {

@@ -1,0 +1,29 @@
+.accordion-button {
+    background-color: #4267B2;
+    color: #000000;
+    padding: 1em;
+    margin: 1em;
+    border-radius: 1em;
+    border-style: hidden;
+    width: 20em;
+}
+.accordion{
+    margin-top: 9em;
+}
+.accordion-body{
+    background-color: blueviolet;
+    color: blue;
+}
+
+.app-home-page{
+    height: 100vh; /* Set height to 100% of the viewport height */
+    width: 100vw;
+}
+
+.background {
+    background-image: url('assets/background.gif');
+    height: 100vh;
+    width: 100vw;
+    background-size: cover;
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+}

@@ -1,38 +1,43 @@
-<div ngbAccordion #accordion="ngbAccordion">
-	<div ngbAccordionItem="first">
-		<h2 ngbAccordionHeader>
-			<button ngbAccordionButton>First panel</button>
-		</h2>
-		<div ngbAccordionCollapse>
-			<div ngbAccordionBody>
-        <ng-template>				
-          <app-weather-lookup></app-weather-lookup>
-        </ng-template>
-			</div>
-		</div>
-	</div>
-	<div ngbAccordionItem="second">
-		<h2 ngbAccordionHeader>
-			<button ngbAccordionButton>Second panel</button>
-		</h2>
-		<div ngbAccordionCollapse>
-			<div ngbAccordionBody>
-				<ng-template>
-          <app-image-input></app-image-input>
-				</ng-template>
-			</div>
-		</div>
-	</div>
-	<div ngbAccordionItem="third">
-		<h2 ngbAccordionHeader>
-			<button ngbAccordionButton>Third panel</button>
-		</h2>
-		<div ngbAccordionCollapse>
-			<div ngbAccordionBody>
-				<ng-template>
-          <app-image-input></app-image-input>
-				</ng-template>
-			</div>
-		</div>
-	</div>
+<div class ="background">
+  <h3>hello I am the title card to be added later</h3>
+  <div id='accordion' ngbAccordion #accordion="ngbAccordion">
+    <div ngbAccordionItem="first">
+      <h2 id = 'accordion-header' ngbAccordionHeader>
+        <button id='accordion-button' ngbAccordionButton>First panel</button>
+      </h2>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <ng-template>				
+            <app-weather-lookup></app-weather-lookup>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div ngbAccordionItem="second">
+      <h2 ngbAccordionHeader>
+        <button ngbAccordionButton>Second panel</button>
+      </h2>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <ng-template>
+            <app-image-input></app-image-input>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div ngbAccordionItem="third">
+      <h2 ngbAccordionHeader>
+        <button ngbAccordionButton>Third panel</button>
+      </h2>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <ng-template>
+            <app-image-input></app-image-input>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>hello</h3>
 </div>
