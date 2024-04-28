@@ -1,32 +1,38 @@
-<div ngbAccordion>
-    <div ngbAccordionItem>
-      <h2 ngbAccordionHeader>
-        <button ngbAccordionButton>First</button>
-      </h2>
-      <div ngbAccordionCollapse>
-        <div ngbAccordionBody>
+<div ngbAccordion #accordion="ngbAccordion">
+	<div ngbAccordionItem="first">
+		<h2 ngbAccordionHeader>
+			<button ngbAccordionButton>First panel</button>
+		</h2>
+		<div ngbAccordionCollapse>
+			<div ngbAccordionBody>
+        <ng-template>				
           <app-weather-lookup></app-weather-lookup>
-        </div>
-      </div>
-    </div>
-    <div ngbAccordionItem>
-      <h2 ngbAccordionHeader>
-        <button ngbAccordionButton>second</button>
-      </h2>
-      <div ngbAccordionCollapse>
-        <div ngbAccordionBody>
+        </ng-template>
+			</div>
+		</div>
+	</div>
+	<div ngbAccordionItem="second">
+		<h2 ngbAccordionHeader>
+			<button ngbAccordionButton>Second panel</button>
+		</h2>
+		<div ngbAccordionCollapse>
+			<div ngbAccordionBody>
+				<ng-template>
           <app-image-input></app-image-input>
-        </div>
-      </div>
-    </div>
-    <div ngbAccordionItem>
-      <h2 ngbAccordionHeader>
-        <button ngbAccordionButton>second</button>
-      </h2>
-      <div ngbAccordionCollapse>
-        <div ngbAccordionBody>
-          <!--combos suggestion component-->
-        </div>
-      </div>
-    </div>
-  </div>
+				</ng-template>
+			</div>
+		</div>
+	</div>
+	<div ngbAccordionItem="third">
+		<h2 ngbAccordionHeader>
+			<button ngbAccordionButton>Third panel</button>
+		</h2>
+		<div ngbAccordionCollapse>
+			<div ngbAccordionBody>
+				<ng-template>
+          <app-image-input></app-image-input>
+				</ng-template>
+			</div>
+		</div>
+	</div>
+</div>
