@@ -16,14 +16,23 @@
 }
 
 .app-home-page{
-    height: 100vh; /* Set height to 100% of the viewport height */
-    width: 100vw;
+    background-color: #4267B2;
+    color: #000000;
+    padding: 1em;
+    margin: 1em;
+    border-radius: 1em;
+    border-style: hidden;
+    width: 20em;
 }
 
 .background {
-    background-image: url('assets/background.gif');
-    height: 100vh;
-    width: 100vw;
+    background-image: url('assets/sky-clouds.webp');
     background-size: cover;
-    background-repeat: no-repeat; /* Prevent the image from repeating */
+    height: 100vh; /* Set the height to 100% of the viewport height */
+    width: 100%; /* Set the width to 100% */
+    background-repeat: no-repeat;
+    padding: 0;
+    margin: 0;
+    border: 0;
 }
+

@@ -1,4 +1,4 @@
-<div>
+<div id="image-input">
   <div
     id="drop-zone"
     (dragover)="onDragOver($event)"
@@ -9,6 +9,6 @@
   </div>
   <div>
     <input type="file" (click)="fileInput.click()" #fileInput style="display: none">
-    <button (click)="openFileExplorer()">Choose File</button>
+    <button class="explorer-button" (click)="openFileExplorer()">Choose File</button>
   </div>
 </div>
