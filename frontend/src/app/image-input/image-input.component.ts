@@ -28,7 +28,15 @@ export class ImageInputComponent {
     event.preventDefault();
   }
 
-  public onDrop(event: DragEvent): void {
+  public onChange(event: any): void {
+    event.preventDefault();
+    const images = event.target.files;
+    if (images) {
+      this.handleFiles(images);
+    }
+  }
+
+  public onDrop(event: any): void {
     event.preventDefault();
     const images = event.dataTransfer?.files;
     if (images) {

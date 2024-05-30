@@ -25,14 +25,3 @@
     width: 20em;
 }
 
-.background {
-    background-image: url('assets/sky-clouds.webp');
-    background-size: cover;
-    height: 100vh; /* Set the height to 100% of the viewport height */
-    width: 100%; /* Set the width to 100% */
-    background-repeat: no-repeat;
-    padding: 0;
-    margin: 0;
-    border: 0;
-}
-

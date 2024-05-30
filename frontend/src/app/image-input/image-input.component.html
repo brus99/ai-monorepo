@@ -8,7 +8,7 @@
     Drop your image folder here
   </div>
   <div>
-    <input type="file" (click)="fileInput.click()" #fileInput style="display: none">
-    <button class="explorer-button" (click)="openFileExplorer()">Choose File</button>
+    <input type="file" (change)="onChange($event)" #fileInput style="display: none">
+    <button class="explorer-button" (click)="fileInput.click()">Choose File</button>
   </div>
 </div>
