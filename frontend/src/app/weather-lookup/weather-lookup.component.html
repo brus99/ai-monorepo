@@ -7,7 +7,7 @@
             <h5>Latitude: {{ latitude }}</h5>
         </app-card-item-ui>
     </div>
-    <div *ngIf="!isLocationLoaded">
-        <h1>waiting</h1>
+    <div id="spinner-img" *ngIf="!isLocationLoaded">
+        <img src="../../assets/spinner-image.gif"/>
     </div>
 </app-card-ui>
