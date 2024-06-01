@@ -1,18 +1,17 @@
 <app-card-ui>
-  <div
-    id="drop-zone"
+  <app-card-item-ui
     (dragover)="onDragOver($event)"
     (drop)="onDrop($event)"
     (onClick)="fileInput.click()"
   >
     Drop your image folder
-  </div>
+  </app-card-item-ui>
   <label id = "label"> or</label>
   <div>
     <input type="file" (change)="onChange($event)" #fileInput style="display: none">
     <button class="explorer-button" (click)="fileInput.click()">choose images here</button>
   </div>
-  <div id="checkmark" *ngIf="bundledData">
+  <app-card-item-ui *ngIf="bundledData">
     <img src="/ai-monorepo/assets/checkmark.png" alt="checkmark">
-  </div>
+  </app-card-item-ui>
 </app-card-ui>

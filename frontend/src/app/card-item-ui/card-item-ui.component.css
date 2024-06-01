@@ -1,0 +1,25 @@
+#card-item {
+    border: 2px dashed #fff;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    width: 50%;
+    margin: 0 auto;
+    border-radius: 10px;
+    background-color: #fbeee0;
+    border: 2px solid #422800;
+    border-radius: 30px;
+    box-shadow: #422800 4px 4px 0 0;
+    padding: 10px;
+    font-weight: 600;
+    font-size: 18px;
+    padding: 0 18px;
+    line-height: 50px;
+    text-align: center;
+    text-decoration: none;
+    height: 50%;
+  }
+
+  #card-item:hover {
+    background-color: #fff;
+  }

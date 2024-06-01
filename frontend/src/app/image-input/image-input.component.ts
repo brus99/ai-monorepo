@@ -2,11 +2,12 @@ import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataProcessingService } from '../services/data-processing.service';
 import { CardUiComponent } from '../card-ui/card-ui.component';
+import { CardItemUiComponent } from '../card-item-ui/card-item-ui.component';
 
 @Component({
   selector: 'app-image-input',
   standalone: true,
-  imports: [CommonModule, CardUiComponent],
+  imports: [CommonModule, CardUiComponent, CardItemUiComponent],
   templateUrl: './image-input.component.html',
   styleUrl: './image-input.component.css',
 })

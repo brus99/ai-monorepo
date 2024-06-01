@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardUiComponent } from '../card-ui/card-ui.component';
+import { CardItemUiComponent } from '../card-item-ui/card-item-ui.component';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, CardUiComponent],
+  imports: [CommonModule, CardUiComponent, CardItemUiComponent],
   templateUrl: './weather-lookup.component.html',
   styleUrl: './weather-lookup.component.css',
   selector: 'app-weather-lookup',
@@ -21,6 +22,7 @@ export class WeatherLookupComponent implements OnInit {
 
   public latitude: number;
   public longitude: number;
+  public isLocationLoaded = false;
 
   public async getUserLocation(): Promise<GeolocationPosition> {
 
@@ -33,6 +35,7 @@ export class WeatherLookupComponent implements OnInit {
           userLocation = position;
           this.latitude = userLocation.coords.latitude;
           this.longitude = userLocation.coords.longitude;
+          this.isLocationLoaded = true;
         });
       } 
   } catch (error) {
