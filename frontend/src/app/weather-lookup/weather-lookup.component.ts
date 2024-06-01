@@ -25,11 +25,8 @@ export class WeatherLookupComponent implements OnInit {
   public isLocationLoaded = false;
 
   public async getUserLocation(): Promise<GeolocationPosition> {
-
-    // could pass latlong data from UI instead
     let userLocation: GeolocationPosition = {} as GeolocationPosition;
 
-    try {
       if("geolocation" in navigator) {
         await navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
           userLocation = position;
@@ -38,9 +35,7 @@ export class WeatherLookupComponent implements OnInit {
           this.isLocationLoaded = true;
         });
       } 
-  } catch (error) {
-      throw new Error('Error getting user location');
-  }
+
     return userLocation;
   }
 }
