@@ -11,34 +11,23 @@
   border-radius: 30px;
   box-shadow: #422800 4px 4px 0 0;
   padding: 10px;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 0 18px;
+  line-height: 50px;
+  text-align: center;
+  text-decoration: none;
 }
 
 #drop-zone.drag-over {
   border-color: #007bff;
 }
 
-#image-input {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: peachpuff;
-  border-radius: 10px;
-  padding: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border: black 2px solid;
-  border-radius: 30px;
-  margin: 0 auto;
-  width: 25%;
-}
-
-
 #drop-zone.drag-over {
   border-color: #007bff;
 }
 
 
-/* CSS */
 .explorer-button {
   background-color: #fbeee0;
   margin-top: 10px;
@@ -73,4 +62,21 @@
     min-width: 120px;
     padding: 0 25px;
   }
+}
+#label{
+  font-size: 20px;
+  font-weight: 600;
+  color: #422800;
+  margin-top:5px;
+  
+}
+
+#checkmark {
+  position: absolute;
+  top: right;
+  left: 88%;
+  height: 25px;
+  width: 25px;
+  background-color: #fbeee0;
+  border-radius: 50%;
 }

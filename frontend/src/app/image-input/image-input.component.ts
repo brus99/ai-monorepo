@@ -1,11 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataProcessingService } from '../services/data-processing.service';
+import { CardUiComponent } from '../card-ui/card-ui.component';
 
 @Component({
   selector: 'app-image-input',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CardUiComponent],
   templateUrl: './image-input.component.html',
   styleUrl: './image-input.component.css',
 })
@@ -17,7 +18,7 @@ export class ImageInputComponent {
   }
 
 
-  private bundledData: FormData = new FormData();
+  public bundledData: FormData = new FormData();
 
   constructor(private dataProcessingService: DataProcessingService){
 

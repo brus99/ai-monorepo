@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CardUiComponent } from '../card-ui/card-ui.component';
 
 @Component({
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CardUiComponent],
   templateUrl: './weather-lookup.component.html',
   styleUrl: './weather-lookup.component.css',
   selector: 'app-weather-lookup',
