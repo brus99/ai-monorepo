@@ -1,34 +1,52 @@
 const MyClassificationPipeline = require('../pipeline');
-
 const http = require('http');
 const url = require('url');
-const querystring = require('querystring');
+const bodyParser = require('body-parser');
 
+const server = http
+  .createServer((request, response) => {
+    const { headers, method, url } = request;
+    let body = [];
+    request
+      .on('error', err => {
+        console.error(err);
+      })
+      .on('data', chunk => {
+        body.push(chunk);
+      })
+      .on('end', () => {
+        body = Buffer.concat(body).toString();
+        console.log('body:', body);
+        console.log(handleRequest(body));
 
-const server = http.createServer();
+      });
+  });
 const hostname = '127.0.0.1';
 const port = 3000;
 
-server.on('request', async (req, res) => {
-  const parsedUrl = url.parse(req.url);
 
-  const { text } = querystring.parse(parsedUrl.query);
+async function handleRequest(body) {
+  const { clothingData, weatherRating } = JSON.parse(body);
 
-  res.setHeader('Content-Type', 'application/json');
+  const question = 'You are a fashion designer given a list of clothing and a weather rating. What clothing combos would you suggest? Return at least 3 items.';
+
+  const context = clothingData + weatherRating;
+
+  console.log(clothingData, weatherRating, question, context);
 
   let response;
-  if (parsedUrl.pathname === '/classify' && text) {
+  // eslint-disable-next-line no-constant-condition
+  if (true) {
     const classifier = await MyClassificationPipeline.getInstance();
-    response = await classifier(text, 'answer this question, today is friday');
-    res.statusCode = 200;
+    response = await classifier(question, context);
   } else {
     response = { 'error': 'Bad request' }
-    res.statusCode = 400;
   }
 
-  res.end(JSON.stringify(response));
-});
+  return response;
+}
 
+//has to do with use of two server.on request handlers
 server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
@@ -64,9 +82,6 @@ def suggestCombos(clothingData: List[str] = [], weatherRating = ''):
 
     result = pipe(question,context)
 
-    print(
-        f"Answer: '{result['answer']}', score: {round(result['score'], 4)}, start: {result['start']}, end: {result['end']}"
-    )
 
 
     return result
