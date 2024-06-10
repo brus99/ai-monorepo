@@ -45,13 +45,35 @@ def extractInfoFromImages():
     img_url = 'https://external-preview.redd.it/V3bkg7AFgFq4-Z-89Tmy7Kj8MWSeZuvd1G7O0S8Zs-Y.jpg?width=640&crop=smart&auto=webp&s=1ea301d67a34b57a7e917b55a2e354ee76dc2e19' 
     raw_image = Image.open(requests.get(img_url, stream=True).raw).convert('RGB')
 
-    question = "does this contain a license plate?"
-    inputs = processor(raw_image, question, return_tensors="pt")
+    initialPrompt = "is this a car or person"
 
+    inputs = processor(raw_image, initialPrompt, return_tensors="pt")
     out = model.generate(**inputs)
     print(processor.decode(out[0], skip_special_tokens=True))
 
-    return processor.decode(out[0], skip_special_tokens=True)
+    carQuestions = ["does this contain a license plate?", "is the car moving", "what color is the car?"]
+    personQuestions = ["is the person wearing a hat?", "is the person wearing glasses?", "what color is the person's shirt?", "how tall do they look?"]
+
+    if(processor.decode(out[0], skip_special_tokens=True) == 'car'):
+        res = []
+        for question in carQuestions:
+            inputs = processor(raw_image, question, return_tensors="pt")
+
+            out = model.generate(**inputs)
+            res.append(processor.decode(out[0], skip_special_tokens=True))
+        print(res)
+        return res
+    elif(processor.decode(out[0], skip_special_tokens=True) == 'person'):
+        res = []
+        for question in personQuestions:
+            inputs = processor(raw_image, question, return_tensors="pt")
+
+            out = model.generate(**inputs)
+            res.append(processor.decode(out[0], skip_special_tokens=True))
+        print(res)
+        return res
+    else:
+        return "not a car or person"
 
 
 
