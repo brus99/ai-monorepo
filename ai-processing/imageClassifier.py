@@ -3,8 +3,7 @@ from transformers import pipeline
 from flask import Flask, request
 from flask_cors import CORS
 from PIL import Image
-from transformers import BlipProcessor, BlipForConditionalGeneration, BlipTextModel
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import BlipProcessor, BlipForConditionalGeneration
 app = Flask(__name__)
 CORS(app)
 
@@ -21,27 +20,38 @@ def suggestCombos(clothingData: List[str] = [], weatherRating = ''):
     classifier = pipeline("zero-shot-classification",
                         model="facebook/bart-large-mnli")
     
-    sequence_to_classify = imageData[0]
     candidate_labels = ['person', 'animal', 'object', 'other']
 
     frequencies = dict()
 
     for i in range(len(imageData)):
-
         res = classifier(imageData[i], candidate_labels)
         print(res)
         frequencies[res['labels'][0]] = frequencies.get(res['labels'][0], [])+ [imageData[i]]
 
-        
-    print(frequencies)
-    return frequencies
     
-    #{'labels': ['travel', 'dancing', 'cooking'],
-    # 'scores': [0.9938651323318481, 0.0032737774308770895, 0.002861034357920289],
-    # 'sequence': 'one day I will see the world'}
+    return frequencies
 
 
+@app.route("/extractInfoFromImages", methods=['POST'])
+def extractInfoFromImages():
 
+    import requests
+    from transformers import BlipProcessor, BlipForQuestionAnswering
+
+    processor = BlipProcessor.from_pretrained("Salesforce/blip-vqa-base")
+    model = BlipForQuestionAnswering.from_pretrained("Salesforce/blip-vqa-base")
+
+    img_url = 'https://external-preview.redd.it/V3bkg7AFgFq4-Z-89Tmy7Kj8MWSeZuvd1G7O0S8Zs-Y.jpg?width=640&crop=smart&auto=webp&s=1ea301d67a34b57a7e917b55a2e354ee76dc2e19' 
+    raw_image = Image.open(requests.get(img_url, stream=True).raw).convert('RGB')
+
+    question = "does this contain a license plate?"
+    inputs = processor(raw_image, question, return_tensors="pt")
+
+    out = model.generate(**inputs)
+    print(processor.decode(out[0], skip_special_tokens=True))
+
+    return processor.decode(out[0], skip_special_tokens=True)
 
 
 

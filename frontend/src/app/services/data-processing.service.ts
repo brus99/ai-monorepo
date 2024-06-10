@@ -31,7 +31,7 @@ export class DataProcessingService {
 
   public async identifyImages(data: FormData): Promise<any> {
     try {
-      const res = await axios.post('http://127.0.0.1:5000', data, {
+      const res = await axios.post('http://127.0.0.1:5000/extractInfoFromImages', data, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       
