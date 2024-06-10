@@ -11,7 +11,7 @@ class MyClassificationPipeline {
         // NOTE: Uncomment this to change the cache directory
         // env.cacheDir = './.cache';
   
-        this.instance = await pipeline('question-answering', 'Xenova/distilbert-base-uncased-distilled-squad');
+        this.instance = await pipeline('question-answering', 'Xenova/distilbert-base-cased-distilled-squad');
       }
   
       return this.instance;

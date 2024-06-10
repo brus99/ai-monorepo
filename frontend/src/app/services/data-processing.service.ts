@@ -55,10 +55,13 @@ export class DataProcessingService {
 
       const temperature = 'hot';
 
-      const res = await axios.post(`http:///127.0.0.1:5000/suggestCombos`, {
+      const comboData = JSON.stringify({
         clothingData: encodedClothingList,
         weatherRating: temperature
       });
+      
+
+      const res = await axios.post(`http:///127.0.0.1:5000/suggestCombos`, comboData, {headers: {'Content-Type': 'application/json'}});
 
       return res;
       // Handle response

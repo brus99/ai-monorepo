@@ -40,11 +40,12 @@ describe('DataProcessingServiceService', () => {
 
       const res = await service.identifyImages(formData);
 
-      expect(res.data[0]["answer"]).toEqual('shirt');
+      expect(res.data[0]).toContain('red shirt');
+      console.log('res', res.data[0]["answer"])
 
     });
     it('should call flask api for multiple files', async () => {
-      const imageData = fs.readFileSync('assets/mcqueen.jpeg');
+      const imageData = fs.readFileSync('assets/maxresdefault.jpg');
       const imageDataTwo = fs.readFileSync('assets/elephant.jpeg');
 
       const formDataTwo = new FormData();
@@ -53,7 +54,7 @@ describe('DataProcessingServiceService', () => {
 
       const blobTwo = new Blob([imageDataTwo], { type: 'image/jpeg' });
 
-      formDataTwo.append('image-0', blob, 'mcqueen.jpeg');
+      formDataTwo.append('image-0', blob, 'suitcase.jpeg');
       formDataTwo.append('image-1', blobTwo, 'elephant.jpeg');
 
       const res = await service.identifyImages(formDataTwo);
@@ -64,14 +65,13 @@ describe('DataProcessingServiceService', () => {
     });
 
     it('should return combos for hot weather from flask api', async () => {
-      const clothingList = ['short sleeve green shirt', 'shorts', 'long pants', 'hat', 'sunglasses','flip flops', 'boots', 'scarf', 'gloves', 'jacket', 'sweater','blue jeans', 'heavy coat', 'light coat', 'heavy pants'];
-
-      const modifiedClothingList = clothingList.map((item) => 
-        item.replace(/ /g, '%')
-      );
+      const clothingList = ['a man wearing a white hat', 'a squirrel with a brown tail', 'a man in a car', 'a man with his head down', 'a person wearing sunglasses','a person in a sweater', 'a radiator', 'a cardboard box', 'gloves', 'toothbrush', 'a red trolley','blue jeans', 'heavy coat', 'a spaceship', 'The inferno'];
 
 
-      const res = await service.getClothingCombos(modifiedClothingList);
+
+      const res = await service.getClothingCombos(clothingList);
+
+      console.log('res', res.d)
     });
   });
 

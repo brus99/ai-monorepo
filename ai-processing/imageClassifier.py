@@ -4,46 +4,43 @@ from flask import Flask, request
 from flask_cors import CORS
 from PIL import Image
 from transformers import BlipProcessor, BlipForConditionalGeneration, BlipTextModel
-
+from transformers import AutoModelForCausalLM, AutoTokenizer
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/suggestCombos", methods=['POST'])
+@app.route("/suggestCombos", methods=['POST'], )
 def suggestCombos(clothingData: List[str] = [], weatherRating = ''):
+
     data = request.get_json()
+
     print(data)
 
+    imageData = data['clothingData']
 
-    print(data['clothingData'])
-
-
-    clothing = ''
-
-    for item in data['clothingData']:
-        clothing += item + ' '
+    from transformers import pipeline
+    classifier = pipeline("zero-shot-classification",
+                        model="facebook/bart-large-mnli")
     
-    weatherRating = data['weatherRating']
+    sequence_to_classify = imageData[0]
+    candidate_labels = ['person', 'animal', 'object', 'other']
 
+    frequencies = dict()
 
+    for i in range(len(imageData)):
 
+        res = classifier(imageData[i], candidate_labels)
+        print(res)
+        frequencies[res['labels'][0]] = frequencies.get(res['labels'][0], [])+ [imageData[i]]
 
-    pipe= pipeline('question-answering')
-
-
-    question = 'You are a fashion designer given a list of clothing and a weather rating. What clothing combos would you suggest. Return atleast 3 items?'
-    context = clothing + weatherRating
-
-    result = pipe(question,context)
-
-    print(
-        f"Answer: '{result['answer']}', score: {round(result['score'], 4)}, start: {result['start']}, end: {result['end']}"
-    )
-
-
-    return result
-
-
+        
+    print(frequencies)
+    return frequencies
     
+    #{'labels': ['travel', 'dancing', 'cooking'],
+    # 'scores': [0.9938651323318481, 0.0032737774308770895, 0.002861034357920289],
+    # 'sequence': 'one day I will see the world'}
+
+
 
 
 
@@ -68,7 +65,7 @@ def classifyImages():
 
         print('i got',raw_image)
 
-        text = "a photography of"
+        text = "an image of"
         inputs = processor(raw_image, text, return_tensors="pt")
 
         out = model.generate(**inputs)

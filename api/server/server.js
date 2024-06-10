@@ -3,24 +3,28 @@ const http = require('http');
 const url = require('url');
 const bodyParser = require('body-parser');
 
-const server = http
-  .createServer((request, response) => {
-    const { headers, method, url } = request;
-    let body = [];
-    request
-      .on('error', err => {
-        console.error(err);
-      })
-      .on('data', chunk => {
-        body.push(chunk);
-      })
-      .on('end', () => {
-        body = Buffer.concat(body).toString();
-        console.log('body:', body);
-        console.log(handleRequest(body));
+const server = http.createServer((request, response) => {
+  const { headers, method, url } = request;
+  let body = [];
+  request
+    .on('error', (err) => {
+      console.error(err);
+    })
+    .on('data', (chunk) => {
+      body.push(chunk);
+    })
+    .on('end', async () => {
+      body = Buffer.concat(body).toString();
+      console.log('body:', body);
+      const responseBody = await handleRequest(body);
 
-      });
-  });
+      response.statusCode = 200;
+      response.setHeader('Content-Type', 'application/json');
+      response.write(JSON.stringify(responseBody));
+      response.end();
+    });
+});
+      
 const hostname = '127.0.0.1';
 const port = 3000;
 
@@ -28,7 +32,7 @@ const port = 3000;
 async function handleRequest(body) {
   const { clothingData, weatherRating } = JSON.parse(body);
 
-  const question = 'You are a fashion designer given a list of clothing and a weather rating. What clothing combos would you suggest? Return at least 3 items.';
+  const question =  'which item here is for very cold weather?';
 
   const context = clothingData + weatherRating;
 
@@ -39,6 +43,7 @@ async function handleRequest(body) {
   if (true) {
     const classifier = await MyClassificationPipeline.getInstance();
     response = await classifier(question, context);
+    console.log(response);
   } else {
     response = { 'error': 'Bad request' }
   }
