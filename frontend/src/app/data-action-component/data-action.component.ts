@@ -19,7 +19,6 @@ export class DataActionComponent implements OnInit{
     });
   }
 
-
   public processData(data: FormData){
     this.dataProcessingService.identifyImages(data);
   }

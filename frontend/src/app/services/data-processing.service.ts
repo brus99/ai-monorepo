@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import axios from 'axios';
-import { Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,13 @@ export class DataProcessingService {
   public dataPipe: Subject<FormData> = new Subject<FormData>();
   public modelResponse: Subject<string> = new Subject<string>();
   private dataPipeSub: Subscription;
-  
+
+  private currentBundledData: FormData = new FormData();
+
+  public imageClassificationResponse: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+  public imageClassificationResponse$: Observable<string[]> = this.imageClassificationResponse.asObservable();
+
+// todo: make chain of calls to processing models and return the final results
 
   constructor(){
     this.dataPipeSub = this.dataPipe.subscribe((data: FormData) => {
@@ -19,6 +25,9 @@ export class DataProcessingService {
 
   }
 
+  public updateImageClassificationResponse(response: string[]) {
+    this.imageClassificationResponse.next(response);
+  }
   public dataPrepared(bundle: FormData){
     this.dataPipe.next(bundle);
   }
@@ -33,8 +42,9 @@ export class DataProcessingService {
       const res = await axios.post('http://127.0.0.1:5000/extractInfoFromImages', data, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      
     
+
+    return res;
   }
   catch (error) {
     console.log('Error sending POST request:', error);
@@ -98,6 +108,8 @@ export class DataProcessingService {
       }
 
     }
+    this.currentBundledData = bundle;
+
     return bundle;
   }
 }

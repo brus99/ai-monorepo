@@ -49,8 +49,6 @@ export class ImageInputComponent {
 
   private handleFiles(files: FileList) {
     this.bundledData = this.dataProcessingService.bundleFormData(files);
-
-    this.dataProcessingService.identifyImages(this.bundledData);
   }
 }
 

@@ -89,14 +89,10 @@ def classifyImages():
     responses = []
 
     for i in range(len(request.files)):
-
         image_key = 'image-' + str(i)
 
         raw_image = Image.open(request.files[image_key]).convert('RGB')
-
-
-        print('i got',raw_image)
-
+        
         text = "an image of"
         inputs = processor(raw_image, text, return_tensors="pt")
 
