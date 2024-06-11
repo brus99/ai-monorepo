@@ -49,7 +49,6 @@ def extractInfoFromImages():
 
     inputs = processor(raw_image, initialPrompt, return_tensors="pt")
     out = model.generate(**inputs)
-    print(processor.decode(out[0], skip_special_tokens=True))
 
     carQuestions = ["does this contain a license plate?", "is the car moving", "what color is the car?"]
     personQuestions = ["is the person wearing a hat?", "is the person wearing glasses?", "what color is the person's shirt?", "how tall do they look?"]
@@ -60,16 +59,17 @@ def extractInfoFromImages():
             inputs = processor(raw_image, question, return_tensors="pt")
 
             out = model.generate(**inputs)
-            res.append(processor.decode(out[0], skip_special_tokens=True))
+            res.append(question + ' - ' + processor.decode(out[0], skip_special_tokens=True))
         print(res)
         return res
     elif(processor.decode(out[0], skip_special_tokens=True) == 'person'):
         res = []
+        answers = dict()
         for question in personQuestions:
-            inputs = processor(raw_image, question, return_tensors="pt")
+            inputs = processor(raw_image, question, return_tensors="pt")m
 
             out = model.generate(**inputs)
-            res.append(processor.decode(out[0], skip_special_tokens=True))
+            res.append(question + ' - ' + processor.decode(out[0], skip_special_tokens=True))
         print(res)
         return res
     else:

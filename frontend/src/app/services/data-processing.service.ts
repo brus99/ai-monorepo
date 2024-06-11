@@ -28,15 +28,26 @@ export class DataProcessingService {
     console.log(response);
   }
 
-
-  public async identifyImages(data: FormData): Promise<any> {
+  public async extractInfoFromImage(data: FormData): Promise<any> {
     try {
       const res = await axios.post('http://127.0.0.1:5000/extractInfoFromImages', data, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       
+    
+  }
+  catch (error) {
+    console.log('Error sending POST request:', error);
+    throw error;
+  }
+}
 
-      
+
+  public async identifyImages(data: FormData): Promise<any> {
+    try {
+      const res = await axios.post('http://127.0.0.1:5000/', data, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
 
       this.modelResponseReceived(res.data);
       // confirmed post is received by flask server as well
@@ -69,5 +80,24 @@ export class DataProcessingService {
       console.error('Error sending POST request:', error);
       throw error;
     }
+  }
+
+  public bundleFormData(files: FileList): FormData {
+    const bundle = new FormData();
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+
+      if (file.type.startsWith('image/')) {
+        const key = 'image-' + i;
+        const curBlob = new Blob([file], { type: file.type });
+        bundle.append(key, curBlob, file.name);
+        return bundle
+      } else {
+        console.log('Not an image file:', file.name);
+      }
+
+    }
+    return bundle;
   }
 }

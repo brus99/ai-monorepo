@@ -48,26 +48,10 @@ export class ImageInputComponent {
   }
 
   private handleFiles(files: FileList) {
-    const bundle = new FormData();
-
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-
-      if (file.type.startsWith('image/')) {
-        const key = 'image-' + i;
-        const curBlob = new Blob([file], { type: file.type });
-        bundle.append(key, curBlob, file.name);
-        this.bundledData = bundle
-        // emit event that data was bundled
-        console.log('Image file:', file);
-      } else {
-        console.log('Not an image file:', file.name);
-      }
-    }
+    this.bundledData = this.dataProcessingService.bundleFormData(files);
 
     this.dataProcessingService.identifyImages(this.bundledData);
   }
-  
 }
 
 
