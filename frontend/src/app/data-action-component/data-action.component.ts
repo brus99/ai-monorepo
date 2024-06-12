@@ -19,7 +19,21 @@ export class DataActionComponent implements OnInit{
     });
   }
 
-  public processData(data: FormData){
-    this.dataProcessingService.identifyImages(data);
+  public async processData(data: FormData){
+
+      
+      const response = await this.dataProcessingService.identifyImages(data);
+
+      const identificationData = response[0]
+
+      const bucketResponse = await this.dataProcessingService.sortResponsesToBuckets(identificationData);
+
+  
+
+
+
+
+
+
   }
 }

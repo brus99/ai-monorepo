@@ -7,14 +7,14 @@ from transformers import BlipProcessor, BlipForConditionalGeneration
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/suggestCombos", methods=['POST'], )
-def suggestCombos(clothingData: List[str] = [], weatherRating = ''):
+@app.route("/sortResponsesToBuckets", methods=['POST'], )
+def suggestCombos():
 
     data = request.get_json()
 
     print(data)
 
-    imageData = data['clothingData']
+    imageData = data['imageClassificationData']
 
     from transformers import pipeline
     classifier = pipeline("zero-shot-classification",

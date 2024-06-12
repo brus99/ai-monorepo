@@ -39,10 +39,10 @@ describe('DataProcessingServiceService', () => {
 
 
       const res = await service.identifyImages(formData);
-      
+
 
       expect(res.data[0]).toContain('red shirt');
-      console.log('res', res.data[0]["answer"])
+      console.log('res', res.data)
 
     });
     it('should call flask api for multiple files', async () => {

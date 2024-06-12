@@ -70,19 +70,14 @@ export class DataProcessingService {
   }
 
 
-  public async getClothingCombos(clothingList: string[]): Promise<any> {
+  public async sortResponsesToBuckets(imageData: string[]): Promise<any> {
     try {
-      const encodedClothingList = clothingList.map((item) => item.replace(/ /g, '%'));
-
-      const temperature = 'hot';
-
       const comboData = JSON.stringify({
-        clothingData: encodedClothingList,
-        weatherRating: temperature
+        imageClassificationData: imageData,
       });
       
 
-      const res = await axios.post(`http:///127.0.0.1:5000/suggestCombos`, comboData, {headers: {'Content-Type': 'application/json'}});
+      const res = await axios.post(`http:///127.0.0.1:5000/sortResponsesToBuckets`, comboData, {headers: {'Content-Type': 'application/json'}});
 
       return res;
       // Handle response
