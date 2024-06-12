@@ -22,11 +22,20 @@ export class DataActionComponent implements OnInit{
   public async processData(data: FormData){
 
       
-      const response = await this.dataProcessingService.identifyImages(data);
+      const blipResponse = await this.dataProcessingService.identifyImages(data);
 
-      const identificationData = response[0]
+      const bucketResponse = await this.dataProcessingService.sortResponsesToBuckets(blipResponse[0]);
 
-      const bucketResponse = await this.dataProcessingService.sortResponsesToBuckets(identificationData);
+      const personImageData = this.dataProcessingService.extractInfoFromImage(bucketResponse.data.person);
+
+      const carImageData = this.dataProcessingService.extractInfoFromImage(bucketResponse.data.object);
+      
+
+
+
+
+
+
 
   
 

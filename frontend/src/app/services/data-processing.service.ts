@@ -77,7 +77,7 @@ export class DataProcessingService {
       });
       
 
-      const res = await axios.post(`http:///127.0.0.1:5000/sortResponsesToBuckets`, comboData, {headers: {'Content-Type': 'application/json'}});
+      const res = await axios.post(`http:///127.0.0.1:5000/sortResponsesToBuckets`, comboData, {headers: {'Content-Type': 'application/json', timeout: 20000}});
 
       return res;
       // Handle response

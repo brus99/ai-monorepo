@@ -46,7 +46,7 @@ describe('DataProcessingServiceService', () => {
 
     });
     it('should call flask api for multiple files', async () => {
-      const imageData = fs.readFileSync('assets/maxresdefault.jpg');
+      const imageData = fs.readFileSync('assets/mcqueen.jpeg');
       const imageDataTwo = fs.readFileSync('assets/elephant.jpeg');
 
       const formDataTwo = new FormData();
@@ -68,12 +68,15 @@ describe('DataProcessingServiceService', () => {
     it('should return combos for hot weather from flask api', async () => {
       const clothingList = ['a man wearing a white hat', 'a squirrel with a brown tail', 'a man in a car', 'a man with his head down', 'a person wearing sunglasses','a person in a sweater', 'a radiator', 'a cardboard box', 'gloves', 'toothbrush', 'a red trolley','blue jeans', 'heavy coat', 'a spaceship', 'The inferno'];
 
+      const res = await service.sortResponsesToBuckets(clothingList);
 
+      expect(res.data.person).toHaveLength(5);
+      expect(res.data.person).toContain('a man wearing a white hat');
 
-      const res = await service.getClothingCombos(clothingList);
-
-      console.log('res', res.d)
-    });
+      expect(res.data.object).toHaveLength(9);
+      expect(res.data.object).toContain('a radiator');
+  
+    },20000);
   });
 
 

@@ -66,7 +66,7 @@ def extractInfoFromImages():
         res = []
         answers = dict()
         for question in personQuestions:
-            inputs = processor(raw_image, question, return_tensors="pt")m
+            inputs = processor(raw_image, question, return_tensors="pt")
 
             out = model.generate(**inputs)
             res.append(question + ' - ' + processor.decode(out[0], skip_special_tokens=True))
@@ -88,6 +88,10 @@ def classifyImages():
     model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-large")
     responses = []
 
+
+
+    
+
     for i in range(len(request.files)):
         image_key = 'image-' + str(i)
 
@@ -99,7 +103,7 @@ def classifyImages():
         out = model.generate(**inputs)
         model_response = processor.decode(out[0], skip_special_tokens=True)
         print(model_response)
-        responses.append(model_response)
+        responses.append(image_key +': ' + model_response)
 
     return responses
 
