@@ -19,30 +19,18 @@ export class DataActionComponent implements OnInit{
     });
   }
 
-  public async processData(data: FormData){
+  public async processData(data: FormData): Promise<any>{
 
-      
-      const blipResponse = await this.dataProcessingService.identifyImages(data);
-
-      const bucketResponse = await this.dataProcessingService.sortResponsesToBuckets(blipResponse[0]);
-
-      const personImageData = this.dataProcessingService.extractInfoFromImage(bucketResponse.data.person);
-
-      const carImageData = this.dataProcessingService.extractInfoFromImage(bucketResponse.data.object);
-      
+    const blipResponse = await this.dataProcessingService.identifyImages(data);
 
 
+    const bucketResponse = await this.dataProcessingService.sortResponsesToBuckets(blipResponse[0]);
 
+    const personImageData = await this.dataProcessingService.extractInfoFromImage(bucketResponse.data.person);
 
+    const carImageData = await this.dataProcessingService.extractInfoFromImage(bucketResponse.data.object);
 
-
-
-  
-
-
-
-
-
+    return [personImageData, carImageData];
 
   }
 }

@@ -14,7 +14,7 @@ def suggestCombos():
 
     print(data)
 
-    imageData = data['imageClassificationData']
+    imageData = data.get('imageClassificationData', [])  # Use get method with default value
 
     from transformers import pipeline
     classifier = pipeline("zero-shot-classification",
@@ -27,7 +27,7 @@ def suggestCombos():
     for i in range(len(imageData)):
         res = classifier(imageData[i], candidate_labels)
         print(res)
-        frequencies[res['labels'][0]] = frequencies.get(res['labels'][0], [])+ [imageData[i]]
+        frequencies[res['labels'][0]] = frequencies.get(res['labels'][0], []) + [imageData[i]]
 
     
     return frequencies
