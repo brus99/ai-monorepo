@@ -7,27 +7,13 @@ const bodyParser = require('body-parser');
 
 import { createClient } from 'redis';
 
-const client = createClient({
-    password: process.env.REDIS_PASSWORD,
-    socket: {
-        host: '=',
-        port: 10837
-    },
-    connectTimeout: 10000,
-});
 
-client.on('error', (err) => {
-  console.log('Redis Error', err);
-});
-
-await client.connect();
-
-
-
-
-
-const server = http.createServer((request, response) => {
+http.createServer(async (request, response) => {
   const { headers, method, url } = request;
+
+  const client = await redisFactory();
+
+
   let body = [];
   request
     .on('error', (err) => {
@@ -40,12 +26,9 @@ const server = http.createServer((request, response) => {
       body = Buffer.concat(body).toString();
       console.log('body:', body);
 
-      response.statusCode = 200;
       response.setHeader('Content-Type', 'application/json');
-      const jsonResponse = JSON.stringify(responseBody);
-      response.write(jsonResponse);
-      response.end();
     });
+
 
     if(url.pathName ==='/setUserInfo' && request.method ==='POST') {
       const requestBody = JSON.parse(body);
@@ -53,13 +36,36 @@ const server = http.createServer((request, response) => {
 
       client.set(userId, JSON.stringify(userInfo));
 
-    };
+      response.statusCode = 200;
+      response.write('User info saved');
+      response.end();
+
+    }
+    if (url.pathName ==='/getUserInfo' && request.method ==='GET') {
+      const requestBody = JSON.parse(body);
+      const { userId } = requestBody;
+
+      response.statusCode = 200;
+      response.write(client.get(userId));
+
+      response.end()
+    }
 });
 
-const hostname = '127.0.0.1';
-const port = 3000;
+async function redisFactory() {
+  const client = createClient({
+    password: process.env.REDIS_PASSWORD,
+    socket: {
+        host: '=',
+        port: 10837
+    },
+    connectTimeout: 10000,
+  });
 
+  client.on('error', (err) => {
+    console.log('Redis Error', err);
+  });
 
-async function handleRequest(body) {
-  client.call('JSON.SET', )
+  await client.connect();
+  return client;
 }
