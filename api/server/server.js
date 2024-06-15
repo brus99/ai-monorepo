@@ -1,7 +1,30 @@
 const MyClassificationPipeline = require('../pipeline');
+const redis = require('redis');
 const http = require('http');
 const url = require('url');
 const bodyParser = require('body-parser');
+
+
+import { createClient } from 'redis';
+
+const client = createClient({
+    password: process.env.REDIS_PASSWORD,
+    socket: {
+        host: '=',
+        port: 10837
+    },
+    connectTimeout: 10000,
+});
+
+client.on('error', (err) => {
+  console.log('Redis Error', err);
+});
+
+await client.connect();
+
+
+
+
 
 const server = http.createServer((request, response) => {
   const { headers, method, url } = request;
@@ -16,81 +39,27 @@ const server = http.createServer((request, response) => {
     .on('end', async () => {
       body = Buffer.concat(body).toString();
       console.log('body:', body);
-      const responseBody = await handleRequest(body);
 
       response.statusCode = 200;
       response.setHeader('Content-Type', 'application/json');
-      response.write(JSON.stringify(responseBody));
+      const jsonResponse = JSON.stringify(responseBody);
+      response.write(jsonResponse);
       response.end();
     });
+
+    if(url.pathName ==='/setUserInfo' && request.method ==='POST') {
+      const requestBody = JSON.parse(body);
+      const { userId, userInfo } = requestBody;
+
+      client.set(userId, JSON.stringify(userInfo));
+
+    };
 });
-      
+
 const hostname = '127.0.0.1';
 const port = 3000;
 
 
 async function handleRequest(body) {
-  const { clothingData, weatherRating } = JSON.parse(body);
-
-  const question =  'which item here is for very cold weather?';
-
-  const context = clothingData + weatherRating;
-
-  console.log(clothingData, weatherRating, question, context);
-
-  let response;
-  // eslint-disable-next-line no-constant-condition
-  if (true) {
-    const classifier = await MyClassificationPipeline.getInstance();
-    response = await classifier(question, context);
-    console.log(response);
-  } else {
-    response = { 'error': 'Bad request' }
-  }
-
-  return response;
+  client.call('JSON.SET', )
 }
-
-//has to do with use of two server.on request handlers
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-});
-
-
-
-
-/*
-@app.route("/suggestCombos", methods=['POST'])
-def suggestCombos(clothingData: List[str] = [], weatherRating = ''):
-    data = request.get_json()
-    print(data)
-
-
-    print(data['clothingData'])
-
-
-    clothing = ''
-
-    for item in data['clothingData']:
-        clothing += item + ' '
-    
-    weatherRating = data['weatherRating']
-
-
-
-
-    pipe= pipeline('question-answering')
-
-
-    question = 'You are a fashion designer given a list of clothing and a weather rating. What clothing combos would you suggest. Return atleast 3 items?'
-    context = clothing + weatherRating
-
-    result = pipe(question,context)
-
-
-
-    return result
-
-
-    
-*/
