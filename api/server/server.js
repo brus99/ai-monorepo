@@ -2,10 +2,8 @@ const MyClassificationPipeline = require('../pipeline');
 const redis = require('redis');
 const http = require('http');
 const url = require('url');
+const createClient = require('redis');
 const bodyParser = require('body-parser');
-
-
-import { createClient } from 'redis';
 
 
 http.createServer(async (request, response) => {
