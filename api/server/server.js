@@ -1,12 +1,8 @@
-const MyClassificationPipeline = require('../pipeline');
-const redis = require('redis');
+
 const http = require('http');
-const url = require('url');
-const createClient = require('redis');
-const bodyParser = require('body-parser');
+const { createClient } = require('redis');
 
-
-http.createServer(async (request, response) => {
+const server = http.createServer(async (request, response) => {
   const { headers, method, url } = request;
 
   const client = await redisFactory();
@@ -48,22 +44,28 @@ http.createServer(async (request, response) => {
 
       response.end()
     }
+
+
+});
+const port = 3000;
+const hostname = '127.0.0.1';
+
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
 });
 
+
 async function redisFactory() {
-  const client = createClient({
-    password: process.env.REDIS_PASSWORD,
-    socket: {
-        host: '=',
-        port: 10837
-    },
-    connectTimeout: 10000,
-  });
+  const client = createClient();
 
   client.on('error', (err) => {
     console.log('Redis Error', err);
   });
 
-  await client.connect();
+  await client.connect({
+    enable_offline_queue: false,
+  });
   return client;
 }
+
+
