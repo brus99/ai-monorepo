@@ -21,31 +21,35 @@ const server = http.createServer(async (request, response) => {
       console.log('body:', body);
 
       response.setHeader('Content-Type', 'application/json');
-    });
 
 
-    if(url.pathName ==='/setUserInfo' && request.method ==='POST') {
+    console.log('path',url.pathName, url);
+
+
+    if(body && url==='/setUserInfo' && request.method ==='POST') {
       const requestBody = JSON.parse(body);
       const { userId, userInfo } = requestBody;
 
-      client.set(userId, JSON.stringify(userInfo));
+      await client.set(userId, JSON.stringify(userInfo));
+      console.log(userInfo, 'user info saved')
 
       response.statusCode = 200;
       response.write('User info saved');
       response.end();
 
     }
-    if (url.pathName ==='/getUserInfo' && request.method ==='GET') {
+    if (url ==='/getUserInfo' && request.method ==='GET') {
       const requestBody = JSON.parse(body);
       const { userId } = requestBody;
 
+      const userInfo = await client.get(userId);
+
       response.statusCode = 200;
-      response.write(client.get(userId));
+      response.write(userInfo);
 
       response.end()
     }
-
-
+  });
 });
 const port = 3000;
 const hostname = '127.0.0.1';
